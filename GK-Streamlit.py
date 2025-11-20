@@ -46,8 +46,8 @@ st.set_page_config(
 )
 df.fillna(0, inplace=True)
 
-regular_font_path = '/Users/malekshafei/Downloads/Montserrat/static/Montserrat-Regular.ttf'
-bold_font_path = '/Users/malekshafei/Downloads/Montserrat/static/Montserrat-Bold.ttf'
+regular_font_path = 'Montserrat-Regular.ttf'
+bold_font_path = 'Montserrat-Bold.ttf'
 
 custom_css = f"""
 <style>
