@@ -133,7 +133,7 @@ if mode == 'Player Overview':
     col1, col2 = st.columns(2)
     with col1:
 
-        mode1 = st.selectbox("Select Radar Type", options=["Basic", 'Detailed'])
+        mode1 = st.selectbox("Select Radar Type", options=["Basic"])
 
     
  
