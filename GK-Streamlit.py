@@ -35,7 +35,7 @@ file_name = 'GKs-Jan5.parquet'
 df = pd.read_parquet(file_name)
 df = df.drop_duplicates(subset = ['Player Name', 'Team Name', 'Competition Name', 'Season']).sort_values(by = ['Season', 'Minutes Played'], ascending= [False, False])
 
-df['Ovr'] = (0.6 * df['Shot Stopping']) + (0.1 * df['Coming Out']) + (0.1 * df['Cross Stopping']) + (0.1 * df['Short Distribution']) + + (0.1 * df['Long Distribution'])
+df['Ovr'] = (0.6 * df['Shot Stopping']) + (0.2 * df['Coming Out']) + (0.2 * df['Cross Stopping'])
 print('reading file')
 st.set_page_config( 
     page_title="Racing Recruitment",
