@@ -753,8 +753,64 @@ if mode == 'Player Rankings':
     with col2: 
         
         df = df[~df['Season'].str.contains('-', na=False)]
-        seasons = ['2025', '25/26']
-        df = df[df['Season'].isin(seasons)]
+        seasons = st.multiselect("Select Seasons", sorted(df['Season'].unique()))
+        df = df[df['Season'].isin(seasons)] 
+
+        def concat_unique(series):
+            return ', '.join(series.astype(str).unique())
+
+        def concat_season(series):
+            unique_series = series.astype(str).unique()
+            if len(unique_series) > 1:
+                return f"{unique_series[0]} - {unique_series[-1]}"
+            else:
+                return unique_series[0]
+
+
+        def concat_not_unique(series):
+            return ', '.join(series.astype(str))
+        nn_cols_list = ['Player Name', 'Age','Team Name', 'Competition Name','Season', 'Preferred Foot', 'Height','Sup Impact On', 'Star Rating On', 'Matches Played', 'Minutes Played']
+
+        for col in df.columns:
+            if col not in nn_cols_list: df[col] = df[col] * df['Minutes Played']
+
+            
+        aggregations = {col: 'sum' for col in df.columns if col not in nn_cols_list}
+        # aggregations['Competition'] = concat_unique
+        aggregations['Minutes Played'] = 'sum'
+        aggregations['Age'] = 'max'
+        aggregations['Team Name'] = concat_unique
+        # aggregations['Competition Name'] = concat_unique
+        #aggregations['Formation'] = concat_unique
+
+        aggregations['Season'] = concat_season
+
+        #aggregations['Position'] = concat_unique
+        aggregations['Preferred Foot'] = concat_unique
+        aggregations['Height'] = concat_unique
+
+        aggregations['Sup Impact On'] = 'max'
+        aggregations['Star Rating On'] = 'max'
+        aggregations['Matches Played'] = 'sum'
+        aggregations['Minutes Played'] = 'sum'
+        #aggregations['Player ID'] = 'first'
+
+
+
+        grouped = df.groupby(['Player Name', 'Competition Name']).agg(aggregations).reset_index()
+
+
+        # #print(grouped.head())
+
+        for col in grouped.columns:
+            if col not in nn_cols_list:
+                #print(col)
+                grouped[col] = (grouped[col] / grouped['Minutes Played']).astype(int)
+
+        df = grouped.copy(deep=True)
+        df = df.sort_values(by = 'Ovr', ascending = False)
+        df['Age'] = round(df['Age'], 1)
+            
         
         minutes_range = st.slider("Minutes Played Range", 0, max(df['Minutes Played']), (600, max(df['Minutes Played'])))
         df = df[(df['Minutes Played'] >= minutes_range[0]) & (df['Minutes Played'] <= minutes_range[1])]
@@ -764,6 +820,10 @@ if mode == 'Player Rankings':
         
     
         num_shown = st.segmented_control("# Players to Show", ["10", "15", "25", "All"],default = "15" )
+
+
+
+    
 
         
         
