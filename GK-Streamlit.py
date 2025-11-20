@@ -108,7 +108,7 @@ if mode == 'Player Overview':
     with col1:
         league1 = st.selectbox(
             'Select League',
-            sorted_competitions
+            sorted_competitions, index = 14
         )
 
     # Place the second selectbox in the second column
