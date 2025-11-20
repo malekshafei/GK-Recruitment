@@ -753,7 +753,7 @@ if mode == 'Player Rankings':
     with col2: 
         
         df = df[~df['Season'].str.contains('-', na=False)]
-        seasons = st.multiselect("Select Seasons", sorted(df['Season'].unique()))
+        seasons = st.multiselect("Select Seasons", sorted(df['Season'].unique()), default = '25/26')
         df = df[df['Season'].isin(seasons)] 
 
         def concat_unique(series):
